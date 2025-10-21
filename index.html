@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+
+
+<!-- Font Awesome for GitHub icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pac-Man Typing Test</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+
+
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pac-Man Typing Test</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://www.freeiconspng.com/thumbs/pacman-png/pacman-orange-png-26.png">
+    <link rel="apple-touch-icon" href="https://www.freeiconspng.com/thumbs/pacman-png/pacman-orange-png-26.png">
+    
+    <!-- Rest of your head content -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        /* Your CSS styles */
+    </style>
+
+
+
+
+
+
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+<!-- GitHub Icon -->
+<div class="github-corner">
+    <a href="https://github.com" target="_blank" class="github-link">
+        <i class="fab fa-github"></i>
+    </a>
+</div>
+
+
+
+
+
+
+
+
+
+    
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="pacman-loader">
+                <div class="pacman-body"></div>
+                <div class="pacman-dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+            <p class="loading-text">Loading Pac-Man Typing Test...</p>
+        </div>
+    </div>
+
+    <!-- Background Canvas -->
+    <canvas id="backgroundCanvas" class="background-canvas"></canvas>
+    
+    <!-- Main Application -->
+    <div id="app" class="app-container">
+        <!-- Home Screen -->
+        <div id="homeScreen" class="screen active">
+            <div class="hero-section">
+                <div class="logo-container">
+                    <h1 class="game-title">PAC-MAN TYPING</h1>
+                    <p class="game-subtitle">Test your typing speed with arcade-style fun!</p>
+                </div>
+                
+                <div class="settings-panel">
+                    <div class="setting-group">
+                        <label class="setting-label">Difficulty</label>
+                        <select id="difficultySelect" class="setting-select">
+                            <option value="easy">Easy - Simple Words</option>
+                            <option value="normal" selected>Normal - Common Words</option>
+                            <option value="hard">Hard - Complex Words</option>
+                            <option value="expert">Expert - Technical Terms</option>
+                            <option value="advanced">Advanced - Programming</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label class="setting-label">Mode</label>
+                        <select id="modeSelect" class="setting-select">
+                            <option value="words" selected>Standard - Words &amp; Sentences</option>
+                            <option value="code">Coders Mode - Code Snippets</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-group" id="languageGroup" style="display: none;">
+                        <label class="setting-label">Language</label>
+                        <select id="languageSelect" class="setting-select">
+                            <option value="javascript" selected>JavaScript</option>
+                            <option value="python">Python</option>
+                            <option value="cpp">C++</option>
+                            <option value="java">Java</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label class="setting-label">Time</label>
+                        <select id="timeSelect" class="setting-select">
+                            <option value="1">1 Minute</option>
+                            <option value="3" selected>3 Minutes</option>
+                            <option value="5">5 Minutes</option>
+                            <option value="10">10 Minutes</option>
+                            <option value="20">20 Minutes</option>
+                            <option value="30">30 Minutes</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label class="setting-label">Sound</label>
+                        <div class="sound-controls">
+                            <button id="soundToggle" class="btn btn-sound active">Sound On</button>
+                            <button id="musicToggle" class="btn btn-sound active">Music On</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="startButton" class="btn btn-primary btn-large start-button">
+                    START TYPING TEST
+                </button>
+            </div>
+        </div>
+        
+        <!-- Game Screen -->
+        <div id="gameScreen" class="screen">
+            <div class="game-header">
+                <div class="metrics-panel">
+                    <div class="metric">
+                        <span class="metric-label">WPM</span>
+                        <span id="wpmDisplay" class="metric-value">0</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Accuracy</span>
+                        <span id="accuracyDisplay" class="metric-value">100%</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Time</span>
+                        <span id="timeDisplay" class="metric-value">3:00</span>
+                    </div>
+                </div>
+                
+                <div class="game-controls">
+                    <button id="pauseButton" class="btn btn-control">Pause</button>
+                    <button id="retryButton" class="btn btn-control">Retry</button>
+                    <button id="exitButton" class="btn btn-control">Exit</button>
+                </div>
+            </div>
+            
+            <div class="typing-area">
+                <div id="textDisplay" class="text-display"></div>
+                <textarea id="typingInput" class="typing-input" placeholder="Start typing here..." autofocus></textarea>
+            </div>
+        </div>
+        
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="screen">
+            <div class="results-container">
+                <h2 class="results-title">Typing Test Complete!</h2>
+                
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-value" id="finalWPM">0</div>
+                        <div class="result-label">Words Per Minute</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-value" id="finalAccuracy">0%</div>
+                        <div class="result-label">Accuracy</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-value" id="charactersTyped">0</div>
+                        <div class="result-label">Characters</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-value" id="errorsCount">0</div>
+                        <div class="result-label">Errors</div>
+                    </div>
+                </div>
+                
+                <div class="results-actions">
+                    <button id="retryTestButton" class="btn btn-primary">Try Again</button>
+                    <button id="homeButton" class="btn btn-secondary">Back to Home</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pause Screen -->
+        <div id="pauseScreen" class="screen pause-overlay">
+            <div class="pause-content">
+                <h2 class="pause-title">GAME PAUSED</h2>
+                <div class="pause-actions">
+                    <button id="resumeButton" class="btn btn-primary">Resume</button>
+                    <button id="restartButton" class="btn btn-secondary">Restart</button>
+                    <button id="quitButton" class="btn btn-secondary">Quit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Audio Elements -->
+    <audio id="typingSound" preload="auto">
+        <source src="sounds/pacman-eat.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="errorSound" preload="auto">
+        <source src="sounds/error.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="startSound" preload="auto">
+        <source src="sounds/game-start.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="completeSound" preload="auto">
+        <source src="sounds/level-complete.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="backgroundMusic" preload="auto" loop>
+        <source src="sounds/pacman-theme.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- JavaScript Files -->
+    <script src="sounds.js"></script>
+    <script src="animations.js"></script>
+    <script src="typingTest.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
